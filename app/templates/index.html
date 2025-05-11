@@ -1,0 +1,27 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+<title>Primer Database</title>
+{% endblock %}
+
+{% block info %}
+    <h1>Primer Database</h1>
+    <h3>About</h3>
+    <p>Welcome to the Primer Database! This is a simple web application that allows you to manage and view primer sequences.</p>
+    <hr>
+{% endblock %}
+
+{% block content %}
+<button type="button" onclick="location.href='{{ url_for('add') }}'">
+    Add new pair of primers
+</button>
+<!-- <a href="{{ url_for('add') }}">Add new pair of primers</a> -->
+<h3>Primers for genes:</h3>
+<ul>
+    {% for pair in primers %}
+    <li>
+        <a href="{{ url_for('pair', gene_id=pair.gene_id) }}">{{ pair.gene_id }}</a>
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}

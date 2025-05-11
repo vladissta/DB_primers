@@ -1,0 +1,39 @@
+body {
+    /* margin: 0; */
+    font-family: sans-serif;
+    background-color: lightgoldenrodyellow;
+}
+
+h1 {
+    text-align: center;
+}
+
+button {
+    background-color: lightcoral;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+}
+button:hover {
+    background-color: coral;
+}
+button:active {
+    background-color: red;
+}
+button:focus {
+    outline: none;
+}
+
+table, th, td {
+    border: 1px solid #333;
+  }
+
+th, td {
+    padding: 6px;
+    text-align: left;
+}

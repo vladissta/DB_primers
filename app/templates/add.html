@@ -1,0 +1,59 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+<title>{% if not primers %}Add Gene{% else %}Update Gene{% endif %}</title>
+{% endblock %}
+
+{% block info %}
+<h3>{% if not primers %}Add Gene{% else %}Update Gene{% endif %}</h3>
+{% endblock %}
+
+{% block content %}
+<form action="/add" method="post">
+{% if primers %}
+    <div>
+        <label for="gene-id"><b>Gene ID:</b> {{ primers.gene_id }}</label><br>
+        <input
+        type="Hidden"
+        id="gene-id"
+        name="gene_id"
+        value="{{ primers.gene_id }}"
+        required>
+    </div><br>
+{% else %}
+    <div>
+        <label for="gene-id"><b>Gene ID</b></label><br>
+        <input
+          type="text"
+          id="gene-id"
+          name="gene_id"
+          placeholder="e.g. BRCA1"
+          required>
+    </div><br>
+{% endif %}
+
+    <div>
+        <label for="forward-primer">Forward Primer</label><br>
+        <textarea
+        id="forward-primer"
+        name="forward_primer"
+        rows="3"       
+        cols="40" 
+        placeholder="e.g. ATGCGTACG..."
+        required>{{ primers.fwd_seq if primers else ''}}</textarea>
+    </div>
+    <div>
+        <label for="reverse-primer">Reverse Primer</label><br>
+        <textarea
+        id="reverse-primer"
+        name="reverse_primer"
+        rows="3"       
+        cols="40" 
+        placeholder="e.g. CGTACGCGT..."
+        required>{{ primers.rev_seq if primers else ''}}</textarea>
+    </div>
+
+    <input type="submit" value="Save">
+  </form>
+
+{% endblock %}
