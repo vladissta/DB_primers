@@ -12,17 +12,14 @@
 {% endblock %}
 
 {% block content %}
-<button type="button" onclick="location.href='{{ url_for('add') }}'">
-    Add new pair of primers
-</button>
-<!-- <a href="{{ url_for('add') }}">Add new pair of primers</a> -->
-<h3>Primers for genes:</h3>
-<ul>
-    {% for pair in primers %}
-    <li>
-        <a href="{{ url_for('pair', primers_id=pair.primers_id) }}">{{ pair.gene.gene_id }}</a>
-    </li>
+  <button onclick="location.href='{{ url_for('add') }}'">Add new pair of primers</button>
+
+  <h3>Genes in database:</h3>
+  <ul>
+    {% for gene_id in gene_ids %}
+      <li>
+        <a href="{{ url_for('pairs', gene_id=gene_id) }}">{{ gene_id }}</a>
+      </li>
     {% endfor %}
-</ul>
+  </ul>
 {% endblock %}
-<!-- <p>{{ pair.primers_id }}</p> -->

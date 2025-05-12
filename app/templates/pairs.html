@@ -1,0 +1,39 @@
+{% extends 'layout.html' %}
+
+{% block title %}<title>Primers for {{ gene_id }}</title>{% endblock %}
+
+{% block info %}
+  <h2>Primers for gene {{ gene_id }}</h2>
+{% endblock %}
+
+{% block content %}
+  {% for p in primers %}
+  <table class="primer-table">
+    <thead>
+      <tr>
+        <th colspan="2">Primer Pair ID: {{ p.primers_id }}</th>
+      </tr>
+      <tr>
+        <th>Direction</th>
+        <th>Sequence (Tₘ °C)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Forward</td>
+        <td>{{ p.fwd_seq }} ({{ p.fwd_tm }})</td>
+      </tr>
+      <tr>
+        <td>Reverse</td>
+        <td>{{ p.rev_seq }} ({{ p.rev_tm }})</td>
+      </tr>
+      <tr class="actions-row">
+        <td colspan="2">
+          <a href="{{ url_for('edit', primers_id=p.primers_id) }}">Edit</a>
+          <a href="{{ url_for('delete', primers_id=p.primers_id) }}">Delete</a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  {% endfor %}
+{% endblock %}

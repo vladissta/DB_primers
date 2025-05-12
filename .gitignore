@@ -415,4 +415,4 @@ fabric.properties
 
 .idea
 app/.DS_Store
-.DS_Store
+**.DS_Store

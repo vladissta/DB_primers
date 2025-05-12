@@ -90,8 +90,11 @@ class Gene(TableClass):
     @staticmethod
     def all(con: sqlite3.Connection):
 
-        all_genes = [Primers(*primers_row[:3])
-                       for primers_row in con.execute('SELECT * FROM genes;')]
+        all_genes = [Gene(*row[:2])
+                       for row in con.execute('SELECT * FROM genes;')]
+        
+        print(all_genes)
+
         for primers in all_genes:
             primers._saved = True
         return all_genes
