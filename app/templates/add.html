@@ -50,7 +50,7 @@
 {% endif %}
 
     <div>
-        <label for="forward-primer">Forward Primer</label><br>
+        <label for="forward-primer"><b>Forward Primer</b></label><br>
         <textarea
         id="forward-primer"
         name="forward_primer"
@@ -60,7 +60,7 @@
         required>{{ primers.fwd_seq if primers else ''}}</textarea>
     </div>
     <div>
-        <label for="reverse-primer">Reverse Primer</label><br>
+        <label for="reverse-primer"><b>Reverse Primer</b></label><br>
         <textarea
         id="reverse-primer"
         name="reverse_primer"
@@ -69,7 +69,6 @@
         placeholder="e.g. CGTACGCGT..."
         required>{{ primers.rev_seq if primers else ''}}</textarea>
     </div>
-
     <input type="submit" value="Save">
   </form>
 

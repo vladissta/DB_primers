@@ -1,0 +1,34 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<h2>Gene <i>{{ gene.gene_id }}</i></h2>
+
+<h4>Sequence:</h4>
+<div class="seq">
+    {% if gene.seq %}
+        <p>{{ gene.seq }}</p>
+    {% else %}
+        <p>No sequence available</p>
+    {% endif %}
+</div>
+
+<p>
+{% if gene.seq %}
+<a href="{{ url_for('gene_edit', gene_id=gene.gene_id, seq=gene.seq) }}">Edit sequence</a>
+{% else %}
+<a href="{{ url_for('gene_edit', gene_id=gene.gene_id) }}">Add sequence</a>
+{% endif %}
+ &#128295 
+</p>
+
+<p><a href="{{ url_for('pairs', gene_id=gene.gene_id) }}">Go to primers</a> &#8649</p>
+
+<form action="{{ url_for('delete_gene', gene_id=gene_id) }}" method="post"
+style="display: inline-block;"
+onsubmit="return confirm('Are you sure you want to delete {{ gene_id }} gene and all its primers?');">
+<button class="btn-del-gene" type="submit">Delete gene &#128465</button>
+</form>
+
+<!-- <p><a href="{{ url_for('delete_gene', gene_id=gene.gene_id) }}">Delete gene</a> &#128465</p> -->
+{% endblock %}

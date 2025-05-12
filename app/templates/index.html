@@ -12,24 +12,30 @@
 {% endblock %}
 
 {% block content %}
-  <button class="btn-add" onclick="location.href='{{ url_for('add') }}'">Add new pair of primers</button>
+  <button class="btn-add" onclick="location.href='{{ url_for('add') }}'">
+    Add new pair of primers for a gene
+  </button>
 
-  <h3>Genes in database:</h3>
+  <h3>Primers for genes in database:</h3>
   <ul>
     {% for gene_id in gene_ids %}
       <li>
         <a href="{{ url_for('pairs', gene_id=gene_id) }}">
           {{ gene_id }}
         </a>
-        <!-- <a href="{{ url_for('pairs', gene_id=gene_id) }}">
-          Sequence
-        </a> -->
+        –
+
+        <form action="{{ url_for('gene', gene_id=gene_id) }}" 
+        style="display: inline-block;">
+        <button type="submit" class="btn-small" title="Gene sequence">&#129516</button>
+        </form>
+
         <form action="{{ url_for('delete_gene', gene_id=gene_id) }}" method="post"
         style="display: inline-block;"
         onsubmit="return confirm('Are you sure you want to delete {{ gene_id }} gene and all its primers?');">
-        <button type="submit" class="btn-delete">&#128465</button>
+        <button type="submit" class="btn-small" title="Delete">&#128465</button>
+
         </form>
-        
       </li>
     {% endfor %}
   </ul>  

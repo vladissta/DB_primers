@@ -28,8 +28,8 @@ class Gene(TableClass):
         self._seq = seq
         self._saved = False
 
-    def __str__(self):
-        return self._gene_id
+    # def __str__(self):
+    #     return self._gene_id
 
     @property
     def gene_id(self):
@@ -63,10 +63,10 @@ class Gene(TableClass):
                         (self._gene_id, self._seq))
         else:
             con.execute('''
-                UPDATE genes 
-                SET sequence = ?
-                WHERE gene_id = ?;
-                ''',
+                        UPDATE genes 
+                        SET sequence = ?
+                        WHERE gene_id = ?;
+                        ''',
                         (self._seq, self._gene_id))
         con.commit()
         self._saved = True

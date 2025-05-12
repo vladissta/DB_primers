@@ -3,7 +3,9 @@
 {% block title %}<title>Primers for {{ gene_id }}</title>{% endblock %}
 
 {% block info %}
-  <h2>Primers for gene <i>{{ gene_id }}</i></h2>
+<h2>Primers for gene
+    <i><a href="{{ url_for('gene', gene_id=gene_id) }}">{{ gene_id }}</a></i>
+</h2>
 {% endblock %}
 
 {% block content %}
@@ -12,9 +14,10 @@
   <button onclick="location.href='{{ url_for('add', gene_id=gene_id) }}'">
     Add new primers for {{ gene_id }}
   </button>
-</div> <br>
+</div>
 
-  {% for p in primers %}
+  {% for primer in primers %}
+  <br></br>
   <table class="primer-table">
     <thead>
       <tr>
@@ -26,24 +29,22 @@
     <tbody>
       <tr>
         <td>Forward</td>
-        <td>{{ p.fwd_seq }}</td>
-        <td>{{ p.fwd_tm }}</td>
+        <td>{{ primer.fwd_seq }}</td>
+        <td>{{ primer.fwd_tm }}</td>
       </tr>
       <tr>
         <td>Reverse</td>
-        <td>{{ p.rev_seq }}</td>
-        <td>{{ p.rev_tm }}</td>
+        <td>{{ primer.rev_seq }}</td>
+        <td>{{ primer.rev_tm }}</td>
       </tr>
       <tr class="actions-row">
         <td colspan="3">
-          <a href="{{ url_for('edit', primers_id=p.primers_id) }}">Edit</a>
-          <a href="{{ url_for('delete_primers', primers_id=p.primers_id) }}">Delete</a>
+          <a href="{{ url_for('edit', primers_id=primer.primers_id) }}">Edit</a>  &#128295<br>
+          <a href="{{ url_for('delete_primers', primers_id=primer.primers_id) }}">Delete</a> &#128465
         </td>
       </tr>
     </tbody>
-  </table><br>
+  </table>
+<font size="1"> <sup>*</sup> T<sub>m</sub> (°C) was calculated automatically and may be changed by a researcher</font>
   {% endfor %}
-<font size="1">  
-  <sup>*</sup> T<sub>m</sub> (°C) was calculated automatically and may be changed by a researcher
-</font>
 {% endblock %}
