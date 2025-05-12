@@ -35,6 +35,7 @@ def gene(gene_id):
     gene = Gene.get(gene_id, get_db())
     return render_template('gene.html', gene=gene)
 
+
 @app.route('/gene_edit/<gene_id>', methods=['GET', 'POST'])
 def gene_edit(gene_id, seq=None):
     gene = Gene.get(gene_id, get_db())
@@ -58,7 +59,7 @@ def add(gene_id=None):
         return redirect(url_for('pairs', gene_id=gene))
     else:
         return render_template('add.html', primers=None, gene_id=gene_id)
-    
+
 
 @app.route('/edit/<primers_id>', methods=['GET', 'POST'])
 def edit(primers_id):
