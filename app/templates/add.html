@@ -1,16 +1,22 @@
 {% extends 'layout.html' %}
 
 {% block title %}
-<title>{% if not primers %}Add Gene{% else %}Update Gene{% endif %}</title>
+<title>{% if primers %}Update primers for {{primers.gene.gene_id}} gene {% elif gene_id %}Add primers for {{ gene_id }} gene {% else %}Add gene and primers {% endif %}</title>
 {% endblock %}
 
 {% block info %}
-<h3>{% if not primers %}Add Gene{% else %}Update Gene{% endif %}</h3>
+<h3>{% if primers %}Update primers for {{primers.gene.gene_id}} gene {% elif gene_id %}Add primers for {{ gene_id }} gene {% else %}Add gene and primers {% endif %}</h3>
 {% endblock %}
 
 {% block content %}
-<!-- <form action="/add" method="post"> -->
-<form action="{{ url_for('add') if not primers else url_for('edit', primers_id=primers.primers_id) }}" method="post">
+
+<form
+  action="{{ url_for('edit', primers_id=primers.primers_id)
+            if primers
+            else url_for('add', gene_id=gene_id) }}"
+  method="post"
+>
+
 {% if primers %}
     <div>
         <label for="gene-id"><b>Gene ID:</b> {{ primers.gene.gene_id }}</label><br>
@@ -20,6 +26,16 @@
         name="gene_id"
         value="{{ primers.gene.gene_id }}"
         required>
+    </div><br>
+{% elif gene_id %}
+    <div>
+        <label for="gene-id"><b>Gene ID: {{ gene_id }}</b></label><br>
+        <input
+          type="hidden"
+          id="gene-id"
+          name="gene_id"
+          value="{{ gene_id }}"
+          required>
     </div><br>
 {% else %}
     <div>

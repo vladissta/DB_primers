@@ -8,7 +8,7 @@ h1 {
     text-align: center;
 }
 
-button {
+.btn-add {
     background-color: lightcoral;
     border: none;
     color: white;
@@ -19,14 +19,29 @@ button {
     font-size: 16px;
     cursor: pointer;
 }
-button:hover {
+.btn-add:hover {
     background-color: coral;
 }
-button:active {
+.btn-add:active {
     background-color: red;
 }
-button:focus {
+.btn-add:focus {
     outline: none;
+}
+
+.btn-delete {
+    background: none;
+    border: none;
+    color: #dc3545;
+    font-size: 18px;
+    padding: 4px;
+    cursor: pointer;
+    vertical-align: middle;
+}
+.btn-delete:hover {
+    color: red;
+    background-color: lightblue;
+    border-radius: 4px;
 }
 
 table, th, td {

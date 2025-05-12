@@ -2,7 +2,7 @@ import os
 import sqlite3
 from db import init_db
 from flask import (Flask, url_for,
-                   render_template, request, g, redirect)
+                   render_template, request, g, redirect, flash)
 from models.primers import Gene, Primers
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -21,55 +21,36 @@ def get_db():
 @app.route("/")
 @app.route('/index')
 def index():
-    # db = get_db()
-    # grab each gene_id only once
-    # cur = db.execute(
-    #     'SELECT DISTINCT gene_id FROM primers ORDER BY gene_id;'
-    # )
-
     gene_ids = [gene.gene_id for gene in Gene.all(get_db())]
     return render_template("index.html", gene_ids=gene_ids)
-
-
-# @app.route('/pair/<primers_id>')
-# def pair(primers_id):
-#     primer_pair = Primers.get(primers_id, get_db())
-#     return render_template('pair.html', pair=primer_pair)
 
 
 @app.route('/pairs/<gene_id>')
 def pairs(gene_id):
     db = get_db()
-    # fetch every primers_id for this gene
-    cur = db.execute(
+    cursor = db.execute(
         'SELECT primers_id FROM primers WHERE gene_id = ? ORDER BY primers_id;',
-        (gene_id,)
-    )
-    primer_ids = [r[0] for r in cur.fetchall()]
-    # load each full Primers object
+        (gene_id,))
+    
+    primer_ids = [row[0] for row in cursor.fetchall()]
+
     primers = [Primers.get(pid, db) for pid in primer_ids]
     return render_template('pairs.html', gene_id=gene_id, primers=primers)
 
 
-
-@app.route('/add', methods=['GET', 'POST', 'PUT'])
-def add():
+@app.route('/add', methods=['GET', 'POST'])
+@app.route('/add/<gene_id>', methods=['GET', 'POST'])
+def add(gene_id=None):
     if request.method == 'POST':
-        gene = Gene(gene_id=request.form['gene_id'], seq="")
-
-        primers = Primers(
-            primers_id=None,
-            gene=gene,
-            fwd_seq=request.form['forward_primer'],
-            rev_seq=request.form['reverse_primer']
-        )
-        
-        primers.save(get_db())
-        
-        return redirect(url_for('pairs', primers_id=primers.primers_id,
-                                gene_id=primers.gene.gene_id))
+        gene = gene_id if gene_id else request.form['gene_id']
+        fwd = request.form['forward_primer']
+        rev = request.form['reverse_primer']
+        new_primers = Primers(primers_id=None, gene=Gene(gene), fwd_seq=fwd, rev_seq=rev)
+        new_primers.save(get_db())
+        return redirect(url_for('pairs', gene_id=gene))
     else:
-        return render_template('add.html')
+        return render_template('add.html', primers=None, gene_id=gene_id)
+    
 
 @app.route('/edit/<primers_id>', methods=['GET', 'POST'])
 def edit(primers_id):
@@ -83,10 +64,19 @@ def edit(primers_id):
         return render_template('add.html', primers=primers, gene_id=primers.gene.gene_id)
 
 
-@app.route('/delete/<primers_id>')
-def delete(primers_id):
+@app.route('/delete_primers/<primers_id>')
+def delete_primers(primers_id):
     primers = Primers.get(primers_id, get_db())
     primers.delete(get_db())
+    return redirect(url_for('pairs', gene_id=primers.gene.gene_id))
+
+
+@app.route('/delete_gene/<gene_id>', methods=['POST'])
+def delete_gene(gene_id):
+    db = get_db()
+    db.execute('DELETE FROM primers WHERE gene_id = ?', (gene_id,))
+    db.execute('DELETE FROM genes WHERE gene_id = ?', (gene_id,))
+    db.commit()
     return redirect(url_for('index'))
 
 

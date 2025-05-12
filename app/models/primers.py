@@ -23,7 +23,7 @@ class TableClass(ABC):
 
 class Gene(TableClass):
 
-    def __init__(self, gene_id: str, seq: str):
+    def __init__(self, gene_id: str, seq: str=''):
         self._gene_id = gene_id
         self._seq = seq
         self._saved = False
@@ -49,7 +49,7 @@ class Gene(TableClass):
     def seq(self, seq: str):
         if seq != self._seq:
             self._saved = False
-        self._seq = seq
+        self._seq = seq.upper()
 
     def save(self, con: sqlite3.Connection):
         if self._saved:
