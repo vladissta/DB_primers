@@ -9,15 +9,16 @@
 {% endblock %}
 
 {% block content %}
-<form action="/add" method="post">
+<!-- <form action="/add" method="post"> -->
+<form action="{{ url_for('add') if not primers else url_for('edit', primers_id=primers.primers_id) }}" method="post">
 {% if primers %}
     <div>
-        <label for="gene-id"><b>Gene ID:</b> {{ primers.gene_id }}</label><br>
+        <label for="gene-id"><b>Gene ID:</b> {{ primers.gene.gene_id }}</label><br>
         <input
         type="Hidden"
         id="gene-id"
         name="gene_id"
-        value="{{ primers.gene_id }}"
+        value="{{ primers.gene.gene_id }}"
         required>
     </div><br>
 {% else %}

@@ -10,7 +10,7 @@
 {% endblock %}
 
 {% block content %}
-<p>Gene ID: {{ pair.gene_id }}</p>
+<p>Gene ID: {{ pair.gene }}</p>
 
 <table><thead>
     <tr>
@@ -33,6 +33,6 @@
 </table>
 <br>
 
-<a href="{{ url_for('edit', gene_id=pair.gene_id) }}">Edit</a>
-<a href="{{ url_for('delete', gene_id=pair.gene_id) }}">Delete</a>
+<a href="{{ url_for('edit', primers_id=pair.primers_id) }}">Edit</a>
+<a href="{{ url_for('delete', primers_id=pair.primers_id) }}">Delete</a>
 {% endblock %}

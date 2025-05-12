@@ -19,7 +19,7 @@ def init_db():
     cursor.execute(
         '''
         CREATE TABLE IF NOT EXISTS primers (
-            primers_id TEXT PRIMARY KEY ,
+            primers_id INTEGER PRIMARY KEY AUTOINCREMENT,
             gene_id TEXT NOT NULL,
             forward_sequence TEXT NOT NULL,
             reverse_sequence TEXT NOT NULL,
