@@ -28,12 +28,7 @@ via *pip*
 pip install -r requirements.txt
 ```
 
-### 3. Create Database
-```bash
-python3 app/db.py
-```
-
-### 4. Run the application
+### 3. Run the application
 ```bash
 python3 app/app.py
 ```

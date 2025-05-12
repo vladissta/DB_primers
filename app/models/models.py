@@ -71,11 +71,13 @@ class Gene(TableClass):
         con.commit()
         self._saved = True
 
+
     def delete(self, con: sqlite3.Connection):
-        con.execute('DELETE FROM genes WHERE gene_id = ?;',
-                    (self.gene_id,))
+        con.execute('DELETE FROM primers WHERE gene_id = ?', (self._gene_id,))
+        con.execute('DELETE FROM genes WHERE gene_id = ?', (self._gene_id,))
         con.commit()
         self._saved = False
+
 
     @staticmethod
     def get(gene_id: str, con: sqlite3.Connection):
@@ -218,16 +220,26 @@ class Primers(TableClass):
 
     @staticmethod
     def get(primers_id: int, con: sqlite3.Connection):
-        cursor = con.execute('SELECT * FROM primers where primers_id=?;', (primers_id,))
-        primers_row = cursor.fetchone()
 
-        if not primers_row:
-            return None
+            cursor = con.execute('SELECT * FROM primers where primers_id=?;', (primers_id,))
+            primers_row = cursor.fetchone()
 
-        gene = Gene.get(primers_row[1], con)
-        p = Primers(primers_row[0], gene, primers_row[2], primers_row[3])
-        p._saved = True
-        return p
+            if not primers_row:
+                return None
+
+            gene = Gene.get(primers_row[1], con)
+            p = Primers(primers_row[0], gene, primers_row[2], primers_row[3])
+            p._saved = True
+            return p
+    
+    
+    @staticmethod
+    def get_by_gene(gene_id: str, con: sqlite3.Connection) -> list[Self]:
+        cursor = con.execute(
+            'SELECT primers_id FROM primers WHERE gene_id = ?;', (gene_id,))
+        primer_ids = [row[0] for row in cursor.fetchall()]
+        return [Primers.get(pid, con) for pid in primer_ids]
+
 
     @staticmethod
     def all(con: sqlite3.Connection) -> list[Self]:

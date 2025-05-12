@@ -3,7 +3,7 @@ import sqlite3
 from db import init_db
 from flask import (Flask, url_for,
                    render_template, request, g, redirect, flash)
-from models.primers import Gene, Primers
+from models.models import Gene, Primers
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 
@@ -27,14 +27,7 @@ def index():
 
 @app.route('/pairs/<gene_id>')
 def pairs(gene_id):
-    db = get_db()
-    cursor = db.execute(
-        'SELECT primers_id FROM primers WHERE gene_id = ? ORDER BY primers_id;',
-        (gene_id,))
-    
-    primer_ids = [row[0] for row in cursor.fetchall()]
-
-    primers = [Primers.get(pid, db) for pid in primer_ids]
+    primers = Primers.get_by_gene(gene_id, get_db())
     return render_template('pairs.html', gene_id=gene_id, primers=primers)
 
 
@@ -71,12 +64,10 @@ def delete_primers(primers_id):
     return redirect(url_for('pairs', gene_id=primers.gene.gene_id))
 
 
-@app.route('/delete_gene/<gene_id>', methods=['POST'])
+@app.route('/delete_gene/<gene_id>')
 def delete_gene(gene_id):
-    db = get_db()
-    db.execute('DELETE FROM primers WHERE gene_id = ?', (gene_id,))
-    db.execute('DELETE FROM genes WHERE gene_id = ?', (gene_id,))
-    db.commit()
+    gene = Gene.get(gene_id, get_db())
+    gene.delete(get_db())
     return redirect(url_for('index'))
 
 
