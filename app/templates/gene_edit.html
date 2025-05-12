@@ -1,0 +1,39 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    <title>Edit Gene</title>
+{% endblock %}
+
+{% block info %}
+    <h1>Edit Gene</h1>
+    <p>Modify the gene sequence below:</p>
+{% endblock %}
+
+{% block content %}
+    <form action="{{ url_for('gene_edit', gene_id=gene.gene_id) }}" method="POST">
+            {% if gene.seq %}
+            <div>
+                <label for="sequence"><b>Sequence:</b></label><br>
+                <textarea id="sequence" 
+                name="sequence"
+                rows="10"       
+                cols="60"
+                required>{{ gene.seq if gene.seq else ''}}</textarea>
+            </div>
+            {% else %}
+            <div>
+                <label for="gene_id"><b>Sequence:</b></label><br>
+                <textarea 
+                id="sequence" 
+                name="sequence"
+                rows="10"       
+                cols="60"
+                required></textarea>
+            </div>
+            {% endif %}
+            <br>
+            <input type="submit" value="Save">
+
+        </form>
+    </div>
+{% endblock %}

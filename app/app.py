@@ -30,6 +30,22 @@ def pairs(gene_id):
     return render_template('pairs.html', gene_id=gene_id, primers=primers)
 
 
+@app.route('/gene/<gene_id>')
+def gene(gene_id):
+    gene = Gene.get(gene_id, get_db())
+    return render_template('gene.html', gene=gene)
+
+@app.route('/gene_edit/<gene_id>', methods=['GET', 'POST'])
+def gene_edit(gene_id, seq=None):
+    gene = Gene.get(gene_id, get_db())
+    if request.method == 'POST':
+        gene.seq = seq if seq else request.form['sequence']
+        gene.save(get_db())
+        return redirect(url_for('gene', gene_id=gene.gene_id))
+    else:
+        return render_template('gene_edit.html', gene=gene)
+
+
 @app.route('/add', methods=['GET', 'POST'])
 @app.route('/add/<gene_id>', methods=['GET', 'POST'])
 def add(gene_id=None):
