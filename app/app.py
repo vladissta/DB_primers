@@ -1,8 +1,7 @@
 import os
 import sqlite3
 from db import init_db
-from flask import (Flask, url_for,
-                   render_template, request, g, redirect, flash)
+from flask import Flask, url_for, render_template, request, g, redirect
 from models.models import Gene, Primers
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -64,7 +63,7 @@ def delete_primers(primers_id):
     return redirect(url_for('pairs', gene_id=primers.gene.gene_id))
 
 
-@app.route('/delete_gene/<gene_id>')
+@app.route('/delete_gene/<gene_id>', methods=['GET', 'POST'])
 def delete_gene(gene_id):
     gene = Gene.get(gene_id, get_db())
     gene.delete(get_db())

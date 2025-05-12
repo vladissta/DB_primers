@@ -21,9 +21,15 @@
         <a href="{{ url_for('pairs', gene_id=gene_id) }}">
           {{ gene_id }}
         </a>
-        <a href="{{ url_for('delete_gene', gene_id=gene_id) }}">
-          &#128465
-        </a>
+        <!-- <a href="{{ url_for('pairs', gene_id=gene_id) }}">
+          Sequence
+        </a> -->
+        <form action="{{ url_for('delete_gene', gene_id=gene_id) }}" method="post"
+        style="display: inline-block;"
+        onsubmit="return confirm('Are you sure you want to delete {{ gene_id }} gene and all its primers?');">
+        <button type="submit" class="btn-delete">&#128465</button>
+        </form>
+        
       </li>
     {% endfor %}
   </ul>  
@@ -31,3 +37,5 @@
 
 
 
+
+        )
